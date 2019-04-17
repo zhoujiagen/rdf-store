@@ -19,13 +19,19 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.spike.giantdataanalysis</groupId>
-			<artifactId>sequences-core</artifactId>
+			<artifactId>rdfstore-commons</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.spike.giantdataanalysis</groupId>
-			<artifactId>db-commons</artifactId>
+			<artifactId>rdfstore-protocol</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.spike.giantdataanalysis</groupId>
+			<artifactId>rdfstore-metrics</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
@@ -48,12 +54,14 @@
 			<artifactId>log4j</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- Jimfs is an in-memory file system for Java 7 and above, implementing
+
+		<!-- Jimfs is an in-memory file system for Java 7 and above, implementing 
 			the java.nio.file abstract file system APIs. -->
 		<dependency>
 			<groupId>com.google.jimfs</groupId>

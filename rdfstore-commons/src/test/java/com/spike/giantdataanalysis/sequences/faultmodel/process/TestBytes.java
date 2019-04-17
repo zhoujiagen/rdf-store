@@ -1,6 +1,6 @@
 package com.spike.giantdataanalysis.sequences.faultmodel.process;
 
-import com.spike.giantdataanalysis.db.commons.data.MoreBytes;
+import com.spike.giantdataanalysis.rdfstore.commons.lang.MoreBytes;
 
 // can we just support a byte message encoder/decoder???
 // now we have Stringable representation. - 20180713

@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
-import com.spike.giantdataanalysis.db.commons.data.MoreBytes;
+import com.spike.giantdataanalysis.rdfstore.commons.lang.MoreBytes;
 import com.spike.giantdataanalysis.sequences.faultmodel.store.StoreConfiguration;
 import com.spike.giantdataanalysis.sequences.faultmodel.store.Stores;
 

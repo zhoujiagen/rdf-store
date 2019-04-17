@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package rdfstore;
+
+import "FileStructure.proto";
+import "WALStructure.proto";
+import "TransactionStructure.proto";
+option java_package = "generated.filesystem";
+option java_outer_classname = "BufferStructureProtos";
+
+//---------------------------------------------------------------------------
+// 缓冲区相关数据结构定义
+//---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// 缓冲区
+//---------------------------------------------------------------------------
+message BufferFrame {
+	Page page = 1;
+}
+
+message BufferPool {
+	repeated BufferFrame frames = 1;
+}
+
+//---------------------------------------------------------------------------
+// 管理性数据结构
+//---------------------------------------------------------------------------
+
+// Buffer Control Block
+message BufferCB {
+	PageId pageId = 1;
+	FileId fileid = 2;
+	uint32 frameIndex = 3;
+	SemaphoreRepr pageSem = 4;
+	bool modified = 5;
+	int32 fixCount = 6;
+	LSN forMinLsn = 7;
+	BufferCB prevInLSN = 8;
+	BufferCB nextInLSN = 9;
+	BufferCB nextInClass = 10;
+}
+
+// Buffer Access Control Block
+message BufferACB {
+	PageId pageId = 1;
+	PageHeader pageAddr = 2; // OUT
+	int32 index = 3;
+	SemaphoreRepr pageSem = 4;
+	bool modified = 5;
+	bool invaliad = 6;
+}
+
+// Free Frame Index Array
+message FreeBufferFrameArray {
+	repeated bool free = 1;
+	uint32 noFreeFrames = 2;
+	SemaphoreRepr free_frame_sem = 3;
+}
+
+// Buffer Hash List
+message BufferHashList {
+	repeated BufferHashClassList classList = 1;
+}
+
+// one class of Buffer Hash List
+message BufferHashClassList {
+	SemaphoreRepr classSem = 1;
+	BufferCB firstBCB = 2;
+}
+
+message MRUPage {
+	BufferCB mruPage = 1;
+}
+
+message LRUPage {
+	BufferCB lruPage = 1;
+	SemaphoreRepr lruSem = 2;
+}
+
+message FreeBufferCB {
+	BufferCB freeCBList = 1;
+	uint32 noFreeCB = 2;
+	SemaphoreRepr freeCBSem = 3;
+}
+
+message FreeBufferACB {
+	BufferACB freeACBList = 1;
+	uint32 noFreeACB = 2;
+	SemaphoreRepr freeACBSem = 3;
+}
+
+
+

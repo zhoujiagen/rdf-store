@@ -1,5 +1,7 @@
 package com.spike.giantdataanalysis.sequences.faultmodel.message;
 
+import com.spike.giantdataanalysis.rdfstore.commons.lang.MoreBytes;
+
 // ---------------------------------------------------------------------------
 // Message Definition
 // ---------------------------------------------------------------------------
@@ -10,8 +12,7 @@ class SessionMessage {
 
   @Override
   public String toString() {
-    return "SM[" + messageType + "]: "
-        + com.spike.giantdataanalysis.db.commons.data.MoreBytes.toHex(value);
+    return "SM[" + messageType + "]: " + MoreBytes.toHex(value);
   }
 
 }
@@ -30,8 +31,7 @@ class Message {
 
   @Override
   public String toString() {
-    return "SM[" + status + "]: "
-        + com.spike.giantdataanalysis.db.commons.data.MoreBytes.toHex(value);
+    return "SM[" + status + "]: " + MoreBytes.toHex(value);
   }
 
 }

@@ -1,6 +1,6 @@
 package com.spike.giantdataanalysis.sequences.faultmodel.process;
 
-import com.spike.giantdataanalysis.db.commons.data.MoreBytes;
+import com.spike.giantdataanalysis.rdfstore.commons.lang.MoreBytes;
 
 /**
  * The message abstration.

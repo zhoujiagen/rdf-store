@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 import com.google.common.base.Splitter;
-import com.spike.giantdataanalysis.db.commons.data.MoreBytes;
+import com.spike.giantdataanalysis.rdfstore.commons.lang.MoreBytes;
 
 /// NEED TO CHECK: when to initialize the Store and Page
 
