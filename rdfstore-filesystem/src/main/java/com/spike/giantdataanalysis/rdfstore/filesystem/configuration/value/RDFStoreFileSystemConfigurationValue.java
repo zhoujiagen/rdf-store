@@ -1,5 +1,7 @@
 package com.spike.giantdataanalysis.rdfstore.filesystem.configuration.value;
 
+import com.spike.giantdataanalysis.rdfstore.configuration.value.OverridableConfigurationValue;
+
 public class RDFStoreFileSystemConfigurationValue
     implements OverridableConfigurationValue<RDFStoreFileSystemConfigurationValue> {
   public String root = "/tmp";

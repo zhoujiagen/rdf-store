@@ -82,7 +82,7 @@ message PageHeader {
 	PageId thatsme = 1; // 页标识符
 	PageType pageType = 2; // 页类型
 	LogicObjectId object_id = 3; // 关系、索引等的内部ID
-	LSN sageUpto = 4; // 用于WAL协议的页面LSN
+	LSN safeUpto = 4; // 用于WAL协议的页面LSN
 	// 是否可用于空闲页链表???
 	PageId previous = 5; // 通常页面在双链表中
 	PageId next = 6;

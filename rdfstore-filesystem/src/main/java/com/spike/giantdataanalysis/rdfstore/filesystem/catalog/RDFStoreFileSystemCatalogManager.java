@@ -148,7 +148,7 @@ public final class RDFStoreFileSystemCatalogManager {
   }
 
   // ---------------------------------------------------------------------------
-  // mapping: file name => file no
+  // mapping: file name <=> file no
   // ---------------------------------------------------------------------------
 
   public FileNo getRegularFileNo(String fileName) {
@@ -158,6 +158,17 @@ public final class RDFStoreFileSystemCatalogManager {
     }
 
     return fileCatalog.getFileno();
+  }
+
+  // WARNING: O(n)
+  public String getRegularFileName(FileNo fileNo) {
+    for (FileCatalog fileCatalog : fileNameCatalogMap.values()) {
+      if (fileCatalog.getFileno().equals(fileNo)) {
+        return fileCatalog.getFileName();
+      }
+    }
+
+    return null;
   }
 
   /**

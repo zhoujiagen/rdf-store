@@ -11,7 +11,7 @@ import generated.filesystem.FileStructureProtos.FileAccessMode;
 import generated.filesystem.FileStructureProtos.FileId;
 
 /**
- * File handle.
+ * File handle: always readable and writable.
  */
 public class RDFStoreFileDescriptor {
 
@@ -23,11 +23,9 @@ public class RDFStoreFileDescriptor {
     this.fileName = fileName;
     this.fileId = fileId;
     FileAccessMode fam = fileId.getAccessMode();
-    String rafMode = "r";
+    String rafMode = null;
     switch (fam) {
     case READ:
-      rafMode = "r";
-      break;
     case APPEND:
     case WRITE:
       rafMode = "rw";
@@ -37,7 +35,6 @@ public class RDFStoreFileDescriptor {
     }
 
     try {
-
       this.raf = new RandomAccessFile(Paths.get(root, fileName).toFile(), rafMode);
       if (fam.equals(FileAccessMode.APPEND)) {
         this.raf.seek(this.raf.length());

@@ -32,7 +32,6 @@ import generated.filesystem.FileStructureProtos.FileAccessMode;
 import generated.filesystem.FileStructureProtos.FileId;
 import generated.filesystem.FileStructureProtos.FileNo;
 import generated.filesystem.FileStructureProtos.FileType;
-import generated.filesystem.client.ProcessStructureProtos.ClientId;
 
 /**
  * Default RDF Store File System implementation.
@@ -79,6 +78,16 @@ public class DefaultRDFStoreFileSystem implements RDFStoreFileSystem {
     } catch (IOException e) {
       throw RDFStoreFileSystemException.newE(e);
     }
+  }
+
+  @Override
+  public RDFStoreFileSystemCatalogManager getCatalogManager() {
+    return this.fsCatalogManager;
+  }
+
+  @Override
+  public RDFStoreFileSystemMemoryStore getMemoryStore() {
+    return this.fsMemoryStore;
   }
 
   @Override
@@ -163,8 +172,7 @@ public class DefaultRDFStoreFileSystem implements RDFStoreFileSystem {
 
     FileId fileId = FileId.newBuilder()//
         .setFileno(fileNo)//
-        .setAccessMode(fam)//
-        .setClientId(this.getClientId()).build();
+        .setAccessMode(fam).build();
 
     fsMemoryStore.initializeFileHandle(fsConfiguration.rdfStore.fileSystem.root, fileName, fileId);
 
@@ -173,11 +181,6 @@ public class DefaultRDFStoreFileSystem implements RDFStoreFileSystem {
     }
 
     return fileId;
-  }
-
-  private ClientId getClientId() {
-    return ClientId.newBuilder().setClientId(String.valueOf(Thread.currentThread().getId()))
-        .build();
   }
 
   @Override
@@ -198,6 +201,8 @@ public class DefaultRDFStoreFileSystem implements RDFStoreFileSystem {
 
   @Override
   public Block read(FileId fileId, BlockId blockId) {
+    this.checkReadable(fileId);
+
     if (LOG.isDebugEnabled()) {
       LOG.debug("read fileId={}, blockId={}", fileId, blockId);
       LOG.debug(this.debugDump(fileId));
@@ -229,6 +234,7 @@ public class DefaultRDFStoreFileSystem implements RDFStoreFileSystem {
   @Override
   public Block[] readc(FileId fileId, BlockId startBlockId, int blockCount) {
     Preconditions.checkArgument(blockCount >= 1, "blockCount should be greater or equal to 1!");
+    this.checkReadable(fileId);
 
     if (LOG.isDebugEnabled()) {
       LOG.debug("readc fileId={}, blockId={}, blockCount={}", fileId, startBlockId, blockCount);
@@ -263,6 +269,8 @@ public class DefaultRDFStoreFileSystem implements RDFStoreFileSystem {
 
   @Override
   public void write(FileId fileId, Block block) {
+    this.checkWritable(fileId);
+
     BlockId blockId = block.getHeader().getBlockno();
 
     block = this.fixBlockSize(blockSize, block);
@@ -322,6 +330,8 @@ public class DefaultRDFStoreFileSystem implements RDFStoreFileSystem {
       return;
     }
 
+    this.checkWritable(fileId);
+
     RDFStoreFileDescriptor fd = fsMemoryStore.getFileHandle(fileId);
     BlockId currentBlockId = startBlockId;
     for (Block block : blocks) {
@@ -357,6 +367,31 @@ public class DefaultRDFStoreFileSystem implements RDFStoreFileSystem {
       fd.raf.getChannel().force(true);
     } catch (IOException e) {
       throw RDFStoreFileSystemException.newE(e);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // check access mode
+  // ---------------------------------------------------------------------------
+
+  private void checkReadable(FileId fileId) {
+    FileAccessMode am = fileId.getAccessMode();
+    switch (am) {
+    case UNRECOGNIZED:
+      throw RDFStoreFileSystemException.newE("cannot read file " + fileId);
+    default:
+      break;
+    }
+  }
+
+  private void checkWritable(FileId fileId) {
+    FileAccessMode am = fileId.getAccessMode();
+    switch (am) {
+    case READ:
+    case UNRECOGNIZED:
+      throw RDFStoreFileSystemException.newE("cannot write file  " + fileId);
+    default:
+      break;
     }
   }
 

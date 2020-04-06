@@ -1,16 +1,25 @@
 package com.spike.giantdataanalysis.rdfstore.filesystem;
 
+import com.spike.giantdataanalysis.rdfstore.filesystem.catalog.RDFStoreFileSystemCatalogManager;
+import com.spike.giantdataanalysis.rdfstore.filesystem.core.RDFStoreFileSystemMemoryStore;
+
 import generated.filesystem.FileStructureProtos.Block;
 import generated.filesystem.FileStructureProtos.BlockId;
 import generated.filesystem.FileStructureProtos.FileAccessMode;
 import generated.filesystem.FileStructureProtos.FileId;
 
 /**
- * RDF Store File System Abstraction.
+ * File System Abstraction.
+ * <p>
+ * {@link FileId} represent as a file handle, never change.
  */
 public interface RDFStoreFileSystem {
 
   long getUsableSpaceBytes();
+
+  RDFStoreFileSystemCatalogManager getCatalogManager();
+
+  RDFStoreFileSystemMemoryStore getMemoryStore();
 
   /**
    * create and allocate file.

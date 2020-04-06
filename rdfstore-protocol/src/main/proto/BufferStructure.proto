@@ -27,7 +27,7 @@ message BufferPool {
 // 管理性数据结构
 //---------------------------------------------------------------------------
 
-// Buffer Control Block
+// BCB: Buffer Control Block
 message BufferCB {
 	PageId pageId = 1;
 	FileId fileid = 2;
@@ -41,24 +41,24 @@ message BufferCB {
 	BufferCB nextInClass = 10;
 }
 
-// Buffer Access Control Block
+// BACB: Buffer Access Control Block
 message BufferACB {
-	PageId pageId = 1;
-	PageHeader pageAddr = 2; // OUT
-	int32 index = 3;
-	SemaphoreRepr pageSem = 4;
-	bool modified = 5;
-	bool invaliad = 6;
+	PageId pageId = 1; // 页ID
+	PageHeader pageAddr = 2; // 页指针(OUT参数)
+	int32 index = 3; // 页内记录号(调用者使用)
+	SemaphoreRepr pageSem = 4; // 页保护信号量指针
+	bool modified = 5; // 调用者修改页标志
+	bool invalid = 6; // 调用者撤销页标志
 }
 
 // Free Frame Index Array
 message FreeBufferFrameArray {
 	repeated bool free = 1;
-	uint32 noFreeFrames = 2;
-	SemaphoreRepr free_frame_sem = 3;
+	uint32 noFreeFrames = 2; // 当前空闲框架数量
+	SemaphoreRepr free_frame_sem = 3; // 保护free_frames的信号量
 }
 
-// Buffer Hash List
+// BCB Hash List
 message BufferHashList {
 	repeated BufferHashClassList classList = 1;
 }

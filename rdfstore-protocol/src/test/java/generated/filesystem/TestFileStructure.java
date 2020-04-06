@@ -118,10 +118,6 @@ public class TestFileStructure {
     FileId fileId = FileId.newBuilder()//
         .setFileno(fileNo)//
         .setAccessMode(FileAccessMode.WRITE)//
-        .setClientId(//
-          ClientId.newBuilder()//
-              .setNodeId("node1")//
-              .setClientId("client1").build())
         .build();
 
     BlockHeader blockHeader = BlockHeader.newBuilder()//
