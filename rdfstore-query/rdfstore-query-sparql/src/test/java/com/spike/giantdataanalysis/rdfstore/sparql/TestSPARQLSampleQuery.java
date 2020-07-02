@@ -90,7 +90,7 @@ public class TestSPARQLSampleQuery {
     parser.setErrorHandler(errorStrategy);
     parser.addErrorListener(new MyErrorListener(path));
 
-    ParseTree tree = parser.gQueryUnit();
+    ParseTree tree = parser.queryUnit();
     System.out.println(tree.toStringTree(parser));
     // System.out.println();
     index++;

@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.spike.giantdataanalysis.rdfstore.sparql.SPARQLQueryLexer;
 import com.spike.giantdataanalysis.rdfstore.sparql.SPARQLQueryParser;
+import com.spike.giantdataanalysis.rdfstore.sparql.ast.SPARQLQueryAST;
 
 public class TestSPARQLQueryAST {
   public static String TEST_QUERY_DIR = "src/test/resources/sparql";
@@ -24,7 +25,7 @@ public class TestSPARQLQueryAST {
     CommonTokenStream tokens = new CommonTokenStream(lexer);
     SPARQLQueryParser parser = new SPARQLQueryParser(tokens);
 
-    ParseTree tree = parser.gQueryUnit();
+    ParseTree tree = parser.queryUnit();
     System.out.println(tree.toStringTree(parser));
     SPARQLQueryAST ast = new SPARQLQueryAST(parser);
     ast.visit(tree);
